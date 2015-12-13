@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieStreaming", "MovieStreaming\MovieStreaming.csproj", "{50246118-43C8-48D5-B26D-5A99E8FA3C56}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieStreaming.Remote", "MovieStreaming.Remote\MovieStreaming.Remote.csproj", "{EC9A923A-B25B-4D51-83BB-0CC5C311D5DF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieStreaming.Common", "MovieStreaming.Common\MovieStreaming.Common.csproj", "{0E44475F-E590-4D8C-BDA6-98B4CA3BE1BD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{50246118-43C8-48D5-B26D-5A99E8FA3C56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50246118-43C8-48D5-B26D-5A99E8FA3C56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50246118-43C8-48D5-B26D-5A99E8FA3C56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50246118-43C8-48D5-B26D-5A99E8FA3C56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC9A923A-B25B-4D51-83BB-0CC5C311D5DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC9A923A-B25B-4D51-83BB-0CC5C311D5DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC9A923A-B25B-4D51-83BB-0CC5C311D5DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC9A923A-B25B-4D51-83BB-0CC5C311D5DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E44475F-E590-4D8C-BDA6-98B4CA3BE1BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E44475F-E590-4D8C-BDA6-98B4CA3BE1BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E44475F-E590-4D8C-BDA6-98B4CA3BE1BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E44475F-E590-4D8C-BDA6-98B4CA3BE1BD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
