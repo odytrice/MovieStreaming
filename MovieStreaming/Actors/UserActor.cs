@@ -1,6 +1,7 @@
 ﻿using System;
 using Akka.Actor;
 using MovieStreaming.Messages;
+using Akka.Event;
 
 namespace MovieStreaming.Actors
 {
@@ -8,6 +9,8 @@ namespace MovieStreaming.Actors
     {
         private readonly int _userId;
         private string _currentlyWatching;
+
+        private ILoggingAdapter _logger = Context.GetLogger();
 
         public UserActor(int userId)
         {
@@ -21,12 +24,11 @@ namespace MovieStreaming.Actors
             Receive<PlayMovieMessage>(
                 message =>
                 {
-                   // TODO: log: UserActor _userId cannot start playing another movie before stopping existing one
+                    _logger.Warning($"UserActor {_userId} cannot start playing another movie before stopping existing one");
                 });
            
             Receive<StopMovieMessage>(message => StopPlayingCurrentMovie());
-
-            // TODO: log: UserActor _userId behaviour has now become Playing
+            _logger.Info($"UserActor {_userId} behaviour has now become Playing");
         }
 
         private void Stopped()
@@ -36,18 +38,16 @@ namespace MovieStreaming.Actors
             Receive<StopMovieMessage>(
                 message =>
                 {
-                    // TODO: log: UserActor _userId cannot stop if nothing is playing
-                }
-                );
-
-            // TODO: log: UserActor _userId behaviour has now become Stopped
+                    _logger.Warning($"UserActor {_userId} cannot stop if nothing is playing");
+                });
+            _logger.Info($"UserActor {_userId} behaviour has now become Stopped");
         }
         
         private void StartPlayingMovie(string title)
         {
             _currentlyWatching = title;
 
-            // TODO: log: UserActor _userId is currently watching _currentlyWatching
+            _logger.Info($"UserActor {_userId} is currently watching _currentlyWatching");
 
             Context.ActorSelection("/user/Playback/PlaybackStatistics/MoviePlayCounter")
                 .Tell(new IncrementPlayCountMessage(title));
@@ -60,7 +60,7 @@ namespace MovieStreaming.Actors
 
         private void StopPlayingCurrentMovie()
         {
-            // TODO: log: UserActor _userId has stopped watching _currentlyWatching
+            _logger.Info($"UserActor {_userId} has stopped watching _currentlyWatching");
 
             _currentlyWatching = null;
 
@@ -72,24 +72,24 @@ namespace MovieStreaming.Actors
         #region Lifecycle hooks
         protected override void PreStart()
         {
-            // TODO: log: UserActor _userId PreStart
+            _logger.Debug($"UserActor {_userId} PreStart");
         }
 
         protected override void PostStop()
         {
-            // TODO: log: UserActor _userId PostStop
+            _logger.Debug($"UserActor {_userId} PostStop");
         }
 
         protected override void PreRestart(Exception reason, object message)
         {
-            // TODO: log: UserActor _userId PreRestart because reason
+            _logger.Debug($"UserActor {_userId} PreRestart because {reason}");
 
             base.PreRestart(reason, message);
         }
 
         protected override void PostRestart(Exception reason)
         {
-            // TODO: log: UserActor _userId PostRestart because reason
+            _logger.Debug($"UserActor {_userId} PostRestart because {reason}");
 
             base.PostRestart(reason);
         } 

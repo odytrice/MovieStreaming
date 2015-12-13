@@ -2,12 +2,15 @@ using System;
 using System.Collections.Generic;
 using Akka.Actor;
 using MovieStreaming.Messages;
+using Akka.Event;
 
 namespace MovieStreaming.Actors
 {
     public class UserCoordinatorActor : ReceiveActor
     {
         private readonly Dictionary<int, IActorRef> _users;
+
+        private ILoggingAdapter _logger = Context.GetLogger();
 
         public UserCoordinatorActor()
         {
@@ -44,8 +47,8 @@ namespace MovieStreaming.Actors
 
                 _users.Add(userId, newChildActorRef);
 
-                // TODO: log: UserCoordinatorActor created new child UserActor for userId
-                // TODO: log: Total Users _users.Count
+                _logger.Debug($"UserCoordinatorActor created new child UserActor for {userId}");
+                _logger.Debug($"Total Users {_users.Count}");
             }
         }
 
@@ -53,24 +56,24 @@ namespace MovieStreaming.Actors
         #region Lifecycle hooks
         protected override void PreStart()
         {
-            // TODO: log: UserCoordinatorActor PreStart
+            _logger.Debug("UserCoordinatorActor PreStart");
         }
 
         protected override void PostStop()
         {
-            // TODO: log: UserCoordinatorActor PostStop
+            _logger.Debug("UserCoordinatorActor PostStop");
         }
 
         protected override void PreRestart(Exception reason, object message)
         {
-            // TODO: log: UserCoordinatorActor PreRestart because reason
+            _logger.Debug($"UserCoordinatorActor PreRestart because {reason}");
 
             base.PreRestart(reason, message);
         }
 
         protected override void PostRestart(Exception reason)
         {
-            // TODO: log: UserCoordinatorActor PostRestart because reason
+            _logger.Debug($"UserCoordinatorActor PostRestart because {reason}");
 
             base.PostRestart(reason);
         } 

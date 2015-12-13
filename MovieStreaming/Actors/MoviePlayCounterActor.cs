@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using Akka.Actor;
 using MovieStreaming.Exceptions;
 using MovieStreaming.Messages;
-
+using Akka.Event;
 
 namespace MovieStreaming.Actors
 {
     public class MoviePlayCounterActor : ReceiveActor
     {
         private readonly Dictionary<string, int> _moviePlayCounts;
+
+        private ILoggingAdapter _logger = Context.GetLogger();
 
         public MoviePlayCounterActor()
         {            
@@ -40,7 +42,7 @@ namespace MovieStreaming.Actors
                 throw new InvalidOperationException("Simulated exception");
             }
 
-            // TODO: log: MoviePlayCounterActor message.MovieTitle has been watched _moviePlayCounts[message.MovieTitle] times
+            _logger.Info($"MoviePlayCounterActor message.MovieTitle has been watched {_moviePlayCounts[message.MovieTitle]} times");
         }
 
 
@@ -49,24 +51,24 @@ namespace MovieStreaming.Actors
 
         protected override void PreStart()
         {
-            // TODO: log: MoviePlayCounterActor PreStart
+            _logger.Debug("MoviePlayCounterActor PreStart");
         }
 
         protected override void PostStop()
         {
-            // TODO: log: MoviePlayCounterActor PostStop
+            _logger.Debug("MoviePlayCounterActor PostStop");
         }
 
         protected override void PreRestart(Exception reason, object message)
         {
-            // TODO: log: MoviePlayCounterActor PreRestart because reason
+            _logger.Debug($"MoviePlayCounterActor PreRestart because {reason}");
 
             base.PreRestart(reason, message);
         }
 
         protected override void PostRestart(Exception reason)
         {
-            // TODO: log: MoviePlayCounterActor PostRestart because reason
+            _logger.Debug($"MoviePlayCounterActor PostRestart because {reason}");
 
             base.PostRestart(reason);
         }

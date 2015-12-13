@@ -4,6 +4,7 @@ using System.Text;
 using Akka.Actor;
 using MovieStreaming.Messages;
 using MovieStreaming.Statistics;
+using Akka.Event;
 
 namespace MovieStreaming.Actors
 {
@@ -13,6 +14,8 @@ namespace MovieStreaming.Actors
 
         private readonly Queue<string> _recentlyPlayedMovies;
         private const int NumberOfRecentMoviesToAnalyze = 5;
+
+        private ILoggingAdapter _logger = Context.GetLogger();
 
         public TrendingMoviesActor()
         {
@@ -39,7 +42,7 @@ namespace MovieStreaming.Actors
 
             var topMovie = _trendAnalyzer.CalculateMostPopularMovie(_recentlyPlayedMovies);
 
-            // TODO: log: TrendingMovieActor Most popular movie trending now is topMovie
+            _logger.Info($"TrendingMovieActor Most popular movie trending now is {topMovie}");
         }
 
         private void LogDebug()
@@ -53,31 +56,31 @@ namespace MovieStreaming.Actors
                 sb.AppendLine(movie);
             }
 
-            // TODO: log: TrendingMovieActor sb.ToString()            
+            _logger.Info($"TrendingMovieActor {sb.ToString()}");
         }
 
         #region Lifecycle hooks
-        
+
         protected override void PreStart()
-        {            
-            // TODO: log: TrendingMovieActor PreStart
+        {
+            _logger.Debug("TrendingMovieActor PreStart");
         }
 
         protected override void PostStop()
         {
-            // TODO: log: TrendingMovieActor PostStop
+            _logger.Debug("TrendingMovieActor PostStop");
         }
 
         protected override void PreRestart(Exception reason, object message)
         {
-            // TODO: log: TrendingMovieActor PreRestart because reason
+            _logger.Debug($"TrendingMovieActor PreRestart because {reason}");
 
             base.PreRestart(reason, message);
         }
 
         protected override void PostRestart(Exception reason)
         {
-            // TODO: log: TrendingMovieActor PostRestart because reason
+            _logger.Debug($"TrendingMovieActor PostRestart because {reason}");
 
             base.PostRestart(reason);
         }
