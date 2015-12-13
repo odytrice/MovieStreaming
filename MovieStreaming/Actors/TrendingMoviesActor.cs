@@ -17,10 +17,10 @@ namespace MovieStreaming.Actors
 
         private ILoggingAdapter _logger = Context.GetLogger();
 
-        public TrendingMoviesActor()
+        public TrendingMoviesActor(ITrendingMovieAnalyzer analyzer)
         {
             _recentlyPlayedMovies = new Queue<string>(NumberOfRecentMoviesToAnalyze);
-            _trendAnalyzer = new SimpleTrendingMovieAnalyzer();
+            _trendAnalyzer = analyzer;
 
             Receive<IncrementPlayCountMessage>(message => HandleIncrementMessage(message));
         }

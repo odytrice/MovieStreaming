@@ -3,6 +3,10 @@ using System.Threading;
 using Akka.Actor;
 using MovieStreaming.Actors;
 using MovieStreaming.Messages;
+using Ninject;
+using MovieStreaming.Statistics;
+using Akka.DI.Core;
+using Akka.DI.Ninject;
 
 namespace MovieStreaming
 {
@@ -12,7 +16,14 @@ namespace MovieStreaming
 
         private static void Main(string[] args)
         {
+            //Init Ninject
+            var kernel = new StandardKernel();
+            kernel.Bind<ITrendingMovieAnalyzer>().To<SimpleTrendingMovieAnalyzer>();
+
             MovieStreamingActorSystem = ActorSystem.Create("MovieStreamingActorSystem");
+
+            IDependencyResolver resolver = new NinjectDependencyResolver(kernel, MovieStreamingActorSystem);
+
             MovieStreamingActorSystem.ActorOf(Props.Create<PlaybackActor>(), "Playback");
 
 

@@ -2,6 +2,7 @@
 using Akka.Actor;
 using MovieStreaming.Exceptions;
 using Akka.Event;
+using Akka.DI.Core;
 
 namespace MovieStreaming.Actors
 {
@@ -12,7 +13,7 @@ namespace MovieStreaming.Actors
         public PlaybackStatisticsActor()
         {
             Context.ActorOf(Props.Create<MoviePlayCounterActor>(), "MoviePlayCounter");
-            Context.ActorOf(Props.Create<TrendingMoviesActor>(), "TrendingMovies");
+            Context.ActorOf(Context.DI().Props<TrendingMoviesActor>(), "TrendingMovies");
         }
 
         protected override SupervisorStrategy SupervisorStrategy()
