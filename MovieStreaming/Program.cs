@@ -1,59 +1,54 @@
-﻿using Akka.Actor;
-using MovieStreaming.Common;
-using MovieStreaming.Common.Actors;
-using MovieStreaming.Common.Messages;
-using System;
+﻿using System;
+using System.Threading;
+using Akka.Actor;
+using MovieStreaming.Actors;
+using MovieStreaming.Messages;
 
 namespace MovieStreaming
 {
-    class Program
+    internal class Program
     {
         private static ActorSystem MovieStreamingActorSystem;
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            string sysName = "MovieStreamingActor";
+            MovieStreamingActorSystem = ActorSystem.Create("MovieStreamingActorSystem");
+            MovieStreamingActorSystem.ActorOf(Props.Create<PlaybackActor>(), "Playback");
 
-            ColorConsole.WriteLineGray($"Creating {sysName} System");
-            using (MovieStreamingActorSystem = ActorSystem.Create(sysName))
+
+            do
             {
+                ShortPause();
 
-                ColorConsole.WriteLineGray($"Creating Actor Supervisory Heirarchy");
-                var userActor = MovieStreamingActorSystem.ActorOf<PlaybackActor>("playback");
+                Console.WriteLine();
+                Console.WriteLine("enter a command and hit enter");
+                
+                var command = Console.ReadLine();
 
-                do
+                if (command.StartsWith("play"))
                 {
-                    System.Threading.Thread.Sleep(100);
-                    Console.ForegroundColor = ConsoleColor.DarkGray;
-                    ColorConsole.WriteLineGray("Enter a command and hit enter");
+                    int userId = int.Parse(command.Split(',')[1]);
+                    string movieTitle = command.Split(',')[2];
 
-                    var command = Console.ReadLine();
-                    if (command.StartsWith("play"))
-                    {
-                        int userID = int.Parse(command.Split(',')[1]);
-                        string movieTitle = command.Split(',')[2];
+                    var message = new PlayMovieMessage(movieTitle, userId);
+                    MovieStreamingActorSystem.ActorSelection("/user/Playback/UserCoordinator").Tell(message);
+                }
 
-                        var message = new PlayMovieMessage(movieTitle, userID);
-                        MovieStreamingActorSystem.ActorSelection("/user/playback/usercoordinator").Tell(message);
-                    }
+                if (command.StartsWith("stop"))
+                {
+                    int userId = int.Parse(command.Split(',')[1]);                    
 
-                    if (command.StartsWith("stop"))
-                    {
-                        int userID = int.Parse(command.Split(',')[1]);
-                        var message = new StopMovieMessage(userID);
-                        MovieStreamingActorSystem.ActorSelection("/user/playback/usercoordinator").Tell(message);
-                    }
+                    var message = new StopMovieMessage(userId);
+                    MovieStreamingActorSystem.ActorSelection("/user/Playback/UserCoordinator").Tell(message);
+                }
 
-                    if (command == "exit")
-                    {
-                        MovieStreamingActorSystem.Shutdown();
-                        MovieStreamingActorSystem.AwaitTermination();
-                        ColorConsole.WriteLineGray("Actor System Shutdown");
-                        Console.ReadKey();
-                        Environment.Exit(1);
-                    }
-                } while (true);
-            }
+            } while (true);
+        }
+
+        // Perform a short pause for demo purposes to allow console to update nicely
+        private static void ShortPause()
+        {
+            Thread.Sleep(450);
         }
     }
 }
